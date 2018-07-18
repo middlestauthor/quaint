@@ -1,9 +1,0 @@
-Package: quaint
-Title: Detecting selection on quantitative traits
-Version: 0.0.0.9000
-Authors@R: person("Emily", "Josephs", email = "emjo@ucdavis.edu", role = c("aut", "cre"))
-Description: This package tests for selection on quantitative traits using the principal components of the kinship matrix.
-Depends: R (>= 3.4.4)
-License: MIT
-Encoding: UTF-8
-LazyData: true
