@@ -8,6 +8,40 @@ output:
 ---
 
 
+```r
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+```
+
+```
+## 
+## Attaching package: 'dplyr'
+```
+
+```
+## The following objects are masked from 'package:stats':
+## 
+##     filter, lag
+```
+
+```
+## The following objects are masked from 'package:base':
+## 
+##     intersect, setdiff, setequal, union
+```
+
+```r
+library('LaCroixColoR')
+library(viridis)
+```
+
+```
+## Loading required package: viridisLite
+```
+
+```r
+library(quaint)
+```
 
 Here is some example code for running Qpc using Arabidopsis flowering time data.
 
@@ -18,11 +52,39 @@ Here is some example code for running Qpc using Arabidopsis flowering time data.
 ##read in the data. I have it stored as one combined file with traits and genotypes and other info for all the individuals in my dataset.
 load('data/genos-traits-arabidopsis.rda')
 
+
 #pull out genotypic data
 myG = as.matrix(myGadm[, -c(1:17)])
+myG[1:10,1:10]
+```
 
+```
+##       X1 X2 X3 X4 X5 X6 X7 X8 X9 X10
+##  [1,]  1  0  0  0  0  0  0  0  0   0
+##  [2,]  0  0  0  0  0  0  0  0  0   0
+##  [3,]  0  0  0  0  0  0  0  0  0   0
+##  [4,]  0  0  0  0  0  0  0  0  0   0
+##  [5,]  0  0  0  0  0  0  0  0  0   0
+##  [6,]  0  0  0  0  0  0  0  0  0   0
+##  [7,]  0  0  0  0  0  0  0  0  0   0
+##  [8,]  0  0  0  0  0  0  0  0  0   0
+##  [9,]  0  0  0  0  0  0  0  0  0   0
+## [10,]  0  0  0  0  0  0  0  0  0   0
+```
+
+```r
 #pull out the trait data
 myTraits = myGadm[,1:17]
+myTraits[1:5,1:5]
+```
+
+```
+##      id FT10_mean   FT10_sd FT16_mean   FT16_sd
+## 1 10001  68.75000  4.193249     49.50 3.3166248
+## 2 10002  61.00000  7.348469     42.50 0.5773503
+## 3 10004  81.75000  3.201562     79.00 9.0000000
+## 4 10005  76.66667  4.041452     67.25 6.3442888
+## 5 10006 113.50000 10.472185    131.50 3.5355339
 ```
 
 
