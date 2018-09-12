@@ -1,0 +1,30 @@
+---
+title: "example"
+author: "em"
+date: "September 12, 2018"
+output:
+  html_document:
+    keep_md: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library('LaCroixColoR')
+library(quaint)
+```
+
+Here is some example code for running Qpc using Arabidopsis flowering time data.
+
+## 1. Make a kinship matrix.
+```{r kinshipmatrix}
+
+```
+
+
+## 2. Load in trait data
+
+## 3. Run Qpc 
+
+
+
