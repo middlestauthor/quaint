@@ -1,6 +1,8 @@
 # quaint
 QUAntitative Inference of Natural selection on Traits
 
+The first thing you'll want to do is install the R package
+> Rscript install_quanit.R
 
 See example.md for example code to run the method.
 

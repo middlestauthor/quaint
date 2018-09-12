@@ -23,11 +23,14 @@ Here is some example code for running Qpc using Arabidopsis flowering time data.
 ##read in the data. I have it stored as one combined file with traits and genotypes and other info for all the individuals in my dataset.
 load('data/genos-traits-arabidopsis.rda')
 
+
 #pull out genotypic data
 myG = as.matrix(myGadm[, -c(1:17)])
+myG[1:10,1:10]
 
 #pull out the trait data
 myTraits = myGadm[,1:17]
+myTraits[1:5,1:5]
 ```
 
 
