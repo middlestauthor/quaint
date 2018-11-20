@@ -23,15 +23,16 @@ Here is some example code for running Qpc using Arabidopsis flowering time data.
 ##read in the data. I have it stored as one combined file with traits and genotypes and other info for all the individuals in my dataset.
 #load('data/genos-traits-arabidopsis.rda')
 load('data/1001-matrix-50Ksamp.rda')
-load('data/ft16_qpc_inputs.rda')
+#load('data/ft16_qpc_inputs.rda')
+allData = read.csv('data/1001genomes-FT10-FT16 and 1001genomes-accessions.csv', stringsAsFactors = F)
+#get rid of missing data
+allDataFT16 = dplyr::filter(allData, is.na(FT16_mean) == FALSE)
 
-#pull out genotypic data
-#myG = as.matrix(myGadm[, -c(1:17)])
-#myG[1:10,1:10]
 
-#pull out the trait data
-#myTraits = myGadm[,1:17]
-#myTraits[1:5,1:5]
+#pull out genotype data for individuals with phenotypes
+combinedData = dplyr::inner_join(allDataFT16, myGt, by='id')
+myG = combinedData[,-c(1:17)]
+myTraits = combinedData[,1:17]
 ```
 
 
@@ -43,7 +44,7 @@ The input for this is a table of genotypes. You want to randomly sample loci -- 
 myK = make_k(as.matrix(myG))
 
 ## we can look at myK a bit to see how we feel about it.
-heatmap(myK, col=inferno(100))
+#heatmap(myK, col=inferno(100))
 
 #doing the eigen decomposition
 myEig = eigen(myK)
@@ -64,8 +65,9 @@ In the function:
 myQpc = calcQpc(myZ = myTraits$FT16_mean, 
                    myU = myEig$vectors, 
                    myLambdas = myEig$values,
-                   myR = 200,
-                   myPCcutoff = 0.2)
+                   tailCutoff=1,
+                   myPCcutoff = 0.2,
+                   vapcs = 485)
 ```
 
 ## 4. Look at the Qpc output.
@@ -82,18 +84,18 @@ Now look at specific PCs. I'm going to color plots by subpopulation but you coul
 ```{r Qpcresults2}
 
 #estimate the confidence intervals
-myVaest = var0(myQpc$cm[600:800])
+myVaest = var0(myQpc$cm[485:969])
 myCI = 1.96*sqrt(myVaest*myEig$values)
 
 #plot
 palette(c('white','#999999', '#E69F00', '#56B4E9', "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", 'black', 'mediumpurple3'))
 par(mar = c(5,8,5,14), xpd=T)
 
-plot(myEig$vectors[,2], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = myTraits$group, lwd=2, ylab = "", yaxt="n",xlab = "PC2", cex.lab=2, cex.axis=2, xaxt="n")
+plot(myEig$vectors[,2], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = as.factor(myTraits$group), lwd=2, ylab = "", yaxt="n",xlab = "PC2", cex.lab=2, cex.axis=2, xaxt="n")
 axis(1, cex.axis=1.5, lwd=2)
 axis(2, las=2, cex.axis=1.5, lwd=2)
 mtext('Flowering time 16C',side=2, line=5, cex=2)
-legend(0.06, 130, levels(myTraits$group), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
+legend(0.06, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
 par(xpd=F)
 abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,2]), lwd=2, col = "#0072B2")
 abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[2], lty=2, col='#56B4E9', lwd=2)
@@ -101,11 +103,11 @@ abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[2], lty=2, col='#56B4E9', lwd=
 
 
 par(mar = c(5,8,5,14), xpd=T)
-plot(myEig$vectors[,14], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = myTraits$group, lwd=2, ylab = "", yaxt="n",xlab = "PC14", cex.lab=2, cex.axis=2, xaxt="n")
+plot(myEig$vectors[,14], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = as.factor(myTraits$group), lwd=2, ylab = "", yaxt="n",xlab = "PC14", cex.lab=2, cex.axis=2, xaxt="n")
 axis(1, cex.axis=1.5, lwd=2)
 axis(2, las=2, cex.axis=1.5, lwd=2)
 mtext('Flowering time 16C',side=2, line=5, cex=2)
-legend(0.17, 130, levels(myTraits$group), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
+legend(0.17, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
 par(xpd=F)
 abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,14]), lwd=2, col = "#0072B2")
 abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[14], lty=2, col='#56B4E9', lwd=2)
