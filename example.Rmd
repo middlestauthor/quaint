@@ -21,16 +21,17 @@ Here is some example code for running Qpc using Arabidopsis flowering time data.
 ## 1. Load in the data
 ```{r load-in-data}
 ##read in the data. I have it stored as one combined file with traits and genotypes and other info for all the individuals in my dataset.
-load('data/genos-traits-arabidopsis.rda')
-
+#load('data/genos-traits-arabidopsis.rda')
+load('data/1001-matrix-50Ksamp.rda')
+load('data/ft16_qpc_inputs.rda')
 
 #pull out genotypic data
-myG = as.matrix(myGadm[, -c(1:17)])
-myG[1:10,1:10]
+#myG = as.matrix(myGadm[, -c(1:17)])
+#myG[1:10,1:10]
 
 #pull out the trait data
-myTraits = myGadm[,1:17]
-myTraits[1:5,1:5]
+#myTraits = myGadm[,1:17]
+#myTraits[1:5,1:5]
 ```
 
 
