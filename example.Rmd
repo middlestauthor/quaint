@@ -70,7 +70,8 @@ myQpc = calcQpc(myZ = myTraits$FT16_mean,
 ## 4. Look at the Qpc output.
 
 
-First plot out the p values for significance of selection along each PC
+myQpc$pvals is a list of pvalues for each test.
+
 ```{r Qpcresults}
 plot(-log10(myQpc$pvals), bty="n", xlab = "PCs", ylab = "-log10(p value)", col = lacroix_palette('Mango')[4], lwd=2, xaxt="n")
 abline(h = -log10(0.05/length(myQpc$pvals)), col = lacroix_palette('Mango')[1], lwd=2)
