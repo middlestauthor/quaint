@@ -16,7 +16,7 @@ calcQpc(myZ, myU, myLambdas, myPCcutoff = 0.3, tailCutoff = 0.9,
 
 \item{myPCcutoff}{a value that determines how many PCs you want to look at. For example, 0.5 would mean that you would look at the first set of PCs that explain 0.5 of the variation. The default here is 0.3}
 
-\item{tailCutoff}{is there if you don't want to use the last PCs to estimate Va because of excess noise. The default value is 0.9, which means that you're not using the last 10% of your PCs. Set to 1 if you want to use all PCs}
+\item{tailCutoff}{is there if you don't want to use the last PCs to estimate Va because of excess noise. The default value is 0.9, which means that you're not using the last 0.1 of your PCs. Set to 1 if you want to use all PCs}
 
 \item{vapcs}{is the number of pcs used to estimate Va. Default is 50.}
 }
