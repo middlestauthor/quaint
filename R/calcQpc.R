@@ -15,8 +15,8 @@ calcQpc <- function(myZ, myU, myLambdas, myL, myM){
   myCmM = (myZ %*% myU[,myM])/sqrt(myLambdas[myM]) #project + standardize by the eigenvalues for testing for selection
   myCmL = (myZ %*% myU[,myL])/sqrt(myLambdas[myL]) #project + standardize by the eigenvalues for estimating Va
   myQm = sapply(myM, function(n){var0(myCmM[n])/var0(myCmL) })  #test for selection
-  myPs = sapply(1:pcm, function(x){pf(myQm[x], 1, length(myL), lower.tail=F)}) #get a pvalue
-  retdf = list(cm = myCm, qm = myQm, pvals = myPs)
+  myPs = sapply(myM, function(x){pf(myQm[x], 1, length(myL), lower.tail=F)}) #get a pvalue
+  retdf = list(cm = myCmM, cml = myCmL, qm = myQm, pvals = myPs)
   return(retdf)
   }
 
