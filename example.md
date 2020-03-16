@@ -31,7 +31,6 @@ library(dplyr)
 ```
 
 ```r
-library('LaCroixColoR')
 library(viridis)
 ```
 
@@ -78,13 +77,13 @@ myK = make_k(as.matrix(myG))
 #doing the eigen decomposition
 myEig = eigen(myK)
 
-plot(myEig$vectors[,1], myEig$vectors[,2], bty="n", xlab = "PC1", ylab = "PC2", col = lacroix_palette('Mango')[1])
+plot(myEig$vectors[,1], myEig$vectors[,2], bty="n", xlab = "PC1", ylab = "PC2", col = '#FF5300')
 ```
 
 ![](example_files/figure-html/kinshipmatrix-1.png)<!-- -->
 
 ```r
-plot(myEig$values/sum(myEig$values)*100, col = lacroix_palette('Mango')[3], bty="n", ylab = "% variation explained by each PC", xlab = "PC")
+plot(myEig$values/sum(myEig$values)*100, col = "#43B629", bty="n", ylab = "% variation explained by each PC", xlab = "PC")
 ```
 
 ![](example_files/figure-html/kinshipmatrix-2.png)<!-- -->
@@ -94,16 +93,15 @@ In the function:
 * myZ is a vector of trait values
 * myU is the eigen vectors of the kinship matrix
 * myLambdas is the eigen values of th ekinship matrix
-* myR is the number of PCs you want to use to estimate Va (these are PCs that correspond to smaller eigenvalues)
-* myPCcutoff is the proportion of relatedness variation you want the PCs that you test for selection to explain. So, if you want to look at the PCs that cumulatively explain 20% of relatedness variation, set pcCutoff equal to 0.2
+* myL is the range of PCs used to estimate Va
+* myM is the range of PCs used to test for selection
 
 ```r
 myQpc = calcQpc(myZ = myTraits$FT16_mean, 
                    myU = myEig$vectors, 
                    myLambdas = myEig$values,
-                   tailCutoff=1,
-                   myPCcutoff = 0.2,
-                   vapcs = 485)
+                   myM = 1:10,
+                    myL = 485:969)
 ```
 
 ## 4. Look at the Qpc output.
@@ -113,8 +111,8 @@ myQpc$pvals is a list of pvalues for each test.
 
 
 ```r
-plot(-log10(myQpc$pvals), bty="n", xlab = "PCs", ylab = "-log10(p value)", col = lacroix_palette('Mango')[4], lwd=2, xaxt="n")
-abline(h = -log10(0.05/length(myQpc$pvals)), col = lacroix_palette('Mango')[1], lwd=2)
+plot(-log10(myQpc$pvals), bty="n", xlab = "PCs", ylab = "-log10(p value)", col = "#1BB6AF", lwd=2, xaxt="n")
+abline(h = -log10(0.05/length(myQpc$pvals)), col = "#FF5300", lwd=2)
 axis(1, at = c(1:length(myQpc$pvals)))
 ```
 
@@ -124,7 +122,7 @@ Now look at specific PCs. I'm going to color plots by subpopulation but you coul
 
 ```r
 #estimate the confidence intervals
-myVaest = var0(myQpc$cm[485:969])
+myVaest = var0(myQpc$cml)
 myCI = 1.96*sqrt(myVaest*myEig$values)
 
 #plot
@@ -146,21 +144,19 @@ abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[2], lty=2, col='#56B4E9', lwd=
 
 ```r
 par(mar = c(5,8,5,14), xpd=T)
-plot(myEig$vectors[,14], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = as.factor(myTraits$group), lwd=2, ylab = "", yaxt="n",xlab = "PC14", cex.lab=2, cex.axis=2, xaxt="n")
+plot(myEig$vectors[,1], myTraits$FT16_mean[-nrow(myTraits)], bty="n", col = as.factor(myTraits$group), lwd=2, ylab = "", yaxt="n",xlab = "PC1", cex.lab=2, cex.axis=2, xaxt="n")
 axis(1, cex.axis=1.5, lwd=2)
 axis(2, las=2, cex.axis=1.5, lwd=2)
 mtext('Flowering time 16C',side=2, line=5, cex=2)
-legend(0.17, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
+legend(0.12, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
 par(xpd=F)
-abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,14]), lwd=2, col = "#0072B2")
-abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[14], lty=2, col='#56B4E9', lwd=2)
-abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[14], lty=2, col='#56B4E9', lwd=2)
+abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,1]), lwd=2, col = "#0072B2")
+abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[1], lty=2, col='#56B4E9', lwd=2)
+abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[1], lty=2, col='#56B4E9', lwd=2)
 ```
 
 ![](example_files/figure-html/Qpcresults2-2.png)<!-- -->
 
 
-
-TODO: environmental cline association analysis.
 
 
