@@ -136,8 +136,8 @@ mtext('Flowering time 16C',side=2, line=5, cex=2)
 legend(0.06, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
 par(xpd=F)
 abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,2]), lwd=2, col = "#0072B2")
-abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[2], lty=2, col='#56B4E9', lwd=2)
-abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[2], lty=2, col='#56B4E9', lwd=2)
+abline(a=mean(myTraits$FT16_mean), b = myCI[2], lty=2, col='#56B4E9', lwd=2)
+abline(a=mean(myTraits$FT16_mean), b = -myCI[2], lty=2, col='#56B4E9', lwd=2)
 ```
 
 ![](example_files/figure-html/Qpcresults2-1.png)<!-- -->
@@ -151,8 +151,8 @@ mtext('Flowering time 16C',side=2, line=5, cex=2)
 legend(0.12, 130, levels(as.factor(myTraits$group)), pch=1, pt.lwd = 2,col = palette(), bty="n", text.width = 0.04)
 par(xpd=F)
 abline(lm(myTraits$FT16_mean[-nrow(myTraits)]~myEig$vectors[,1]), lwd=2, col = "#0072B2")
-abline(a=mean(myTraits$FT16_mean), b = 1.96*myCI[1], lty=2, col='#56B4E9', lwd=2)
-abline(a=mean(myTraits$FT16_mean), b = -1.96*myCI[1], lty=2, col='#56B4E9', lwd=2)
+abline(a=mean(myTraits$FT16_mean), b = myCI[1], lty=2, col='#56B4E9', lwd=2)
+abline(a=mean(myTraits$FT16_mean), b = -myCI[1], lty=2, col='#56B4E9', lwd=2)
 ```
 
 ![](example_files/figure-html/Qpcresults2-2.png)<!-- -->
