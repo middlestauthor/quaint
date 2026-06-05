@@ -10,23 +10,20 @@
 #' @examples
 #' calcQpc()
 
-condQpc <- function(myZ,myU, myLambdas, myM, myL){
-  
-  # get Xms for each PC (for Z1, the focal trait and Z2, the correlated trait) THESE ARE MEAN CENTERED
-  myX1centered = (myZ[-nrow(myZ),1]-mean(myZ[,1]))%*%myU/sqrt(myLambdas)
-  myX2centered = (myZ[-nrow(myZ),2]-mean(myZ[,2]))%*%myU/sqrt(myLambdas)
-  
-  #get mu' for each PC
-  Ca12 = sum(myX1centered[myL]*myX2centered[myL])/length(myL) #is this the right way to do this??
+condQpc = function (myZ, myU, myLambdas, myM, myL) 
+{
+  myX1centered = (myZ[-nrow(myZ), 1] - mean(myZ[, 1])) %*% 
+    myU/sqrt(myLambdas)
+  myX2centered = (myZ[-nrow(myZ), 2] - mean(myZ[, 2])) %*% 
+    myU/sqrt(myLambdas)
+  Ca12 = sum(myX1centered[myL] * myX2centered[myL])/length(myL)
   Va2 = (sum(myX2centered[myL]^2))/length(myL)
   Va1 = sum(myX1centered[myL]^2)/length(myL)
-  mu1cond = mean(myZ[-nrow(myZ),1]) + (Ca12/Va2)*(myZ[-nrow(myZ),2] - mean(myZ[,2])) #one value for each individual
-  va1cond = Va1 - (Ca12^2)/Va2 
-  
-  #now test for selection
-  myQ = ((myZ[-nrow(myZ),1]-mu1cond)%*%myU[,myM])/sqrt(myLambdas[myM]*va1cond) #get a vector of the projections that we'll test
-  #under neutrality, my Q ~ N(0,1)
-  return(myQ)
+  mu1cond = mean(myZ[-nrow(myZ), 1]) + (Ca12/Va2) * (myZ[-nrow(myZ), 
+                                                         2] - mean(myZ[, 2]))
+  va1cond = Va1 - (Ca12^2)/Va2
+  myQ = ((myZ[-nrow(myZ), 1] - mu1cond) %*% myU[, myM])/sqrt(myLambdas[myM] * 
+                                                               va1cond)
+  myPs = 1-pnorm(abs(myQ), mean=0, sd=1)
+  return(list(myQ = myQ, mu1cond = mu1cond, va1cond = va1cond, pvals = myPs))
 }
-
- 
