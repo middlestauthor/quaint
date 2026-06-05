@@ -12,17 +12,17 @@
 
 condQpc = function (myZ, myU, myLambdas, myM, myL) 
 {
-  myX1centered = (myZ[-nrow(myZ), 1] - mean(myZ[, 1])) %*% 
+  myX1centered = (myZ[1:dim(myU)[1], 1] - mean(myZ[, 1])) %*% 
     myU/sqrt(myLambdas)
-  myX2centered = (myZ[-nrow(myZ), 2] - mean(myZ[, 2])) %*% 
+  myX2centered = (myZ[1:dim(myU)[1], 2] - mean(myZ[, 2])) %*% 
     myU/sqrt(myLambdas)
   Ca12 = sum(myX1centered[myL] * myX2centered[myL])/length(myL)
   Va2 = (sum(myX2centered[myL]^2))/length(myL)
   Va1 = sum(myX1centered[myL]^2)/length(myL)
-  mu1cond = mean(myZ[-nrow(myZ), 1]) + (Ca12/Va2) * (myZ[-nrow(myZ), 
+  mu1cond = mean(myZ[1:dim(myU)[1], 1]) + (Ca12/Va2) * (myZ[1:dim(myU)[1], 
                                                          2] - mean(myZ[, 2]))
   va1cond = Va1 - (Ca12^2)/Va2
-  myQ = ((myZ[-nrow(myZ), 1] - mu1cond) %*% myU[, myM])/sqrt(myLambdas[myM] * 
+  myQ = ((myZ[1:dim(myU)[1], 1] - mu1cond) %*% myU[, myM])/sqrt(myLambdas[myM] * 
                                                                va1cond)
   myPs = 1-pnorm(abs(myQ), mean=0, sd=1)
   return(list(myQ = myQ, mu1cond = mu1cond, va1cond = va1cond, pvals = myPs))
