@@ -2,7 +2,7 @@
 #'
 #' This function calculates conditional Qpc given given using the eigen decomposition of the kinship matrix and trait values.
 #' @param focal_trait vector of trait values for trait of interest. Not normalized yet.
-#' @param cor_trait vector of correlated trait. Not normalized yet
+#' @param cor_trait vector of trait values for the correlated trait. Not normalized yet
 #' @param eigen_k named list from eigen decomposition of kinship matrix with 'vectors' and 'values'
 #' @param test_pcs the vector of PCs you want to test for selection 
 #' @param var_pcs the vector of the PCs used to estimate Va
