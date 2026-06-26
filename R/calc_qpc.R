@@ -13,10 +13,10 @@ calc_qpc = function(trait_values, eigen_k, test_pcs, var_pcs) {
   trait_values = trait_values[1:dim(eigen_k$vectors)[1]] - mean(trait_values)
   myCmM = (trait_values %*% eigen_k$vectors[, test_pcs])/sqrt(eigen_k$values[test_pcs])
   myCmL = (trait_values %*% eigen_k$vectors[, var_pcs])/sqrt(eigen_k$values[var_pcs])
-  myQm = sapply(test_pcs, function(n) {
-    var0(myCmM[n])/var0(myCmL)
+  myQm = apply(myCmM, MARGIN = 2, function(n) {
+    var0(n)/var0(myCmL)
   })
-  p_values = sapply(test_pcs, function(x) {
+  p_values = sapply(1:length(test_pcs), function(x) {
     pf(myQm[x], 1, length(var_pcs), lower.tail = F)
   })
   retdf = list(cm = myCmM, cml = myCmL, qm = myQm, pvals = p_values)
